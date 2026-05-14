@@ -33,3 +33,16 @@ Para uma futura integração Django:
 3. Redirecionar o cliente para `init_point`.
 4. Receber notificações/webhooks para atualizar o status do pedido.
 5. Guardar o `payment_id` e o status retornado.
+
+## Mercado Pago
+
+O projeto já tem um fluxo inicial com Mercado Pago Checkout Pro em `POST /pagamento/`.
+
+Configure estas variáveis na Vercel:
+
+```env
+SITE_URL=https://natolli.vercel.app
+MERCADO_PAGO_ACCESS_TOKEN=APP_USR_SEU_ACCESS_TOKEN_AQUI
+```
+
+Use credenciais de teste primeiro. Depois troque para a credencial de produção da conta que vai receber os pagamentos.

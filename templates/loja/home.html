@@ -25,6 +25,14 @@
   </header>
 
   <main id="inicio">
+    {% if messages %}
+      <div class="messages" role="status">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">Feito à mão em Salvador</p>
@@ -131,6 +139,20 @@
           <p><strong>Quantidade:</strong> {{ order.quantity }}</p>
           <p><strong>Cliente:</strong> {{ order.name }}</p>
           <a class="button primary" href="{{ whatsapp_url }}" target="_blank" rel="noreferrer">Enviar no WhatsApp</a>
+          {% if mercado_pago_enabled %}
+            <form class="payment-form" action="{% url 'loja:create_payment' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="product" value="{{ request.POST.product }}">
+              <input type="hidden" name="color" value="{{ order.color }}">
+              <input type="hidden" name="quantity" value="{{ order.quantity }}">
+              <input type="hidden" name="name" value="{{ order.name }}">
+              <input type="hidden" name="phone" value="{{ order.phone }}">
+              <input type="hidden" name="notes" value="{{ order.notes }}">
+              <button class="button payment-button" type="submit">Pagar com Mercado Pago</button>
+            </form>
+          {% else %}
+            <p class="setup-note">Mercado Pago pronto no código. Falta configurar a variável MERCADO_PAGO_ACCESS_TOKEN na Vercel.</p>
+          {% endif %}
         </aside>
       {% endif %}
     </section>

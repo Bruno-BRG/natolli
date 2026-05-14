@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Status do pagamento | Natolli Studio</title>
+  <link rel="stylesheet" href="{% static 'loja/css/site.css' %}">
+</head>
+<body class="status-page">
+  <main class="status-card">
+    <a class="brand" href="{% url 'loja:home' %}" aria-label="Natolli Studio">
+      <span class="brand-mark">N</span>
+      <span>
+        <strong>Natolli</strong>
+        <small>Studio artesanal</small>
+      </span>
+    </a>
+
+    {% if status == "approved" %}
+      <p class="eyebrow">Pagamento aprovado</p>
+      <h1>Seu pedido foi recebido.</h1>
+      <p>Vamos confirmar os detalhes da encomenda pelo WhatsApp.</p>
+    {% elif status == "pending" %}
+      <p class="eyebrow">Pagamento pendente</p>
+      <h1>Seu pagamento está em análise.</h1>
+      <p>Assim que o Mercado Pago confirmar, seguimos com seu pedido.</p>
+    {% else %}
+      <p class="eyebrow">Pagamento não concluído</p>
+      <h1>Não conseguimos finalizar o pagamento.</h1>
+      <p>Você pode tentar novamente ou chamar a Natolli pelo WhatsApp.</p>
+    {% endif %}
+
+    <a class="button primary" href="{% url 'loja:home' %}">Voltar para a loja</a>
+  </main>
+</body>
+</html>

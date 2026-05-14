@@ -124,6 +124,21 @@ nav a {
   margin: 0 auto;
 }
 
+.messages {
+  width: min(1180px, calc(100% - 36px));
+  margin: 18px auto 0;
+  padding: 14px 18px;
+  background: rgba(155, 23, 71, 0.1);
+  border: 1px solid rgba(155, 23, 71, 0.22);
+  border-radius: 8px;
+  color: var(--wine);
+  font-weight: 700;
+}
+
+.messages p {
+  margin: 0;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.75fr);
@@ -381,6 +396,63 @@ textarea {
   margin-top: 12px;
   background: var(--paper-soft);
   color: var(--coffee);
+}
+
+.payment-form {
+  margin-top: 12px;
+}
+
+.payment-form input {
+  display: none;
+}
+
+.payment-button {
+  width: 100%;
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--paper-soft);
+}
+
+.setup-note {
+  margin-top: 16px;
+  color: rgba(255, 250, 244, 0.82);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.status-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 18px;
+}
+
+.status-card {
+  width: min(760px, 100%);
+  padding: clamp(26px, 6vw, 56px);
+  background: rgba(255, 250, 244, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.status-card .brand {
+  margin-bottom: 36px;
+}
+
+.status-card h1 {
+  margin-bottom: 20px;
+  font-size: clamp(38px, 6vw, 68px);
+}
+
+.status-card p:not(.eyebrow) {
+  color: #5e5149;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.status-card .button {
+  margin-top: 20px;
 }
 
 .contact-section {
