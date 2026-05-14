@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -6,7 +7,17 @@ SECRET_KEY = "django-insecure-dev-natolli-studio"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "natolli.vercel.app",
+]
+
+extra_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
+if extra_allowed_hosts:
+    ALLOWED_HOSTS.extend(
+        host.strip() for host in extra_allowed_hosts.split(",") if host.strip()
+    )
 
 INSTALLED_APPS = [
     "django.contrib.admin",
