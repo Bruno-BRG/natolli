@@ -1,16 +1,4 @@
 {
-  "version": 2,
-  "buildCommand": "sh build_files.sh",
-  "builds": [
-    {
-      "src": "natolli/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "natolli/wsgi.py"
-    }
-  ]
+  "framework": "nextjs",
+  "buildCommand": "npm run build"
 }
