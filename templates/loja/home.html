@@ -1,0 +1,162 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Natolli Studio | Pedidos artesanais</title>
+  <link rel="stylesheet" href="{% static 'loja/css/site.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Natolli Studio">
+      <span class="brand-mark">N</span>
+      <span>
+        <strong>Natolli</strong>
+        <small>Studio artesanal</small>
+      </span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#cores">Cores</a>
+      <a href="#pedido">Pedido</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Feito à mão em Salvador</p>
+        <h1>Bolsas e peças artesanais com a sua cor, o seu jeito e acabamento sob encomenda.</h1>
+        <p>
+          Escolha um modelo, selecione a linha e envie seu pedido. A confirmação final de prazo,
+          valor e pagamento pode ser feita pelo WhatsApp.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#pedido">Fazer pedido</a>
+          <a class="button secondary" href="#catalogo">Ver modelos</a>
+        </div>
+      </div>
+      <div class="hero-media" aria-label="Bolsa artesanal Natolli">
+        <img src="{% static 'Screenshot 2026-05-13 at 22-04-00 Instagram.png' %}" alt="Bolsa artesanal bordô Natolli">
+      </div>
+    </section>
+
+    <section id="catalogo" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">Catálogo inicial</p>
+        <h2>Modelos para encomenda</h2>
+      </div>
+      <div class="product-grid">
+        {% for product in products %}
+          <article class="product-card">
+            <img src="{% static product.image %}" alt="{{ product.name }}">
+            <div>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description }}</p>
+              <strong>{{ product.price }}</strong>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="cores" class="section muted-section">
+      <div class="section-heading">
+        <p class="eyebrow">Linhas Natolli</p>
+        <h2>Paleta de cores disponível</h2>
+      </div>
+      <div class="color-layout">
+        <div class="color-list">
+          {% for color in colors %}
+            <span>{{ color }}</span>
+          {% endfor %}
+        </div>
+        <div class="catalog-images">
+          <img src="{% static '687689589_18154638397465413_943167371564330037_n.webp' %}" alt="Catálogo de cores Natolli 1">
+          <img src="{% static '696116415_18154639126465413_8642838163509299590_n.webp' %}" alt="Catálogo de cores Natolli 2">
+        </div>
+      </div>
+    </section>
+
+    <section id="pedido" class="section order-section">
+      <div class="section-heading">
+        <p class="eyebrow">Pedido rápido</p>
+        <h2>Monte sua encomenda</h2>
+      </div>
+
+      <form class="order-form" method="post">
+        {% csrf_token %}
+        <label>
+          Produto
+          <select name="product" required>
+            {% for product in products %}
+              <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          Cor da linha
+          <select name="color" required>
+            {% for color in colors %}
+              <option>{{ color }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          Quantidade
+          <input type="number" name="quantity" value="1" min="1" max="20" required>
+        </label>
+        <label>
+          Seu nome
+          <input type="text" name="name" placeholder="Ex.: Maria Silva" required>
+        </label>
+        <label>
+          WhatsApp
+          <input type="tel" name="phone" placeholder="Ex.: (71) 99999-9999" required>
+        </label>
+        <label class="full">
+          Observações
+          <textarea name="notes" rows="4" placeholder="Ex.: quero alça maior, embalagem para presente, prazo desejado..."></textarea>
+        </label>
+        <button class="button primary full" type="submit">Gerar pedido</button>
+      </form>
+
+      {% if order %}
+        <aside class="order-summary" aria-live="polite">
+          <h3>Pedido pronto para envio</h3>
+          <p><strong>Produto:</strong> {{ order.product }}</p>
+          <p><strong>Cor:</strong> {{ order.color }}</p>
+          <p><strong>Quantidade:</strong> {{ order.quantity }}</p>
+          <p><strong>Cliente:</strong> {{ order.name }}</p>
+          <a class="button primary" href="{{ whatsapp_url }}" target="_blank" rel="noreferrer">Enviar no WhatsApp</a>
+        </aside>
+      {% endif %}
+    </section>
+
+    <section id="contato" class="section contact-section">
+      <div>
+        <p class="eyebrow">Contato e pagamento</p>
+        <h2>Atendimento direto e pagamento simples</h2>
+        <p>
+          Placeholder de contato: WhatsApp {{ whatsapp_number }}, Instagram @natolli_studio,
+          Salvador - Bahia. Troque esses dados quando tiver os contatos finais.
+        </p>
+      </div>
+      <div class="payment-notes">
+        <h3>Recomendação inicial</h3>
+        <p>
+          Comece com pedido por WhatsApp + Pix manual para validar os produtos. Quando o volume crescer,
+          integre Mercado Pago Checkout Pro para cartão, Pix, boleto e retorno automático ao site.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Natolli Studio</span>
+    <span>Artesanal - feito à mão - com alma</span>
+  </footer>
+</body>
+</html>
