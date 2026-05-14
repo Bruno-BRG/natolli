@@ -34,7 +34,7 @@ body::before {
   z-index: -1;
   background:
     linear-gradient(rgba(248, 241, 233, 0.82), rgba(248, 241, 233, 0.88)),
-    url("/static/Screenshot%202026-05-13%20at%2022-04-51%20(4)%20Instagram.png") center/cover;
+    url("../img/fundo-folhas-esquerda.png") center/cover;
 }
 
 a {
