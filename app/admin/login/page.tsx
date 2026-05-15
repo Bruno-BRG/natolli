@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { signInAdmin } from "@/app/admin/auth-actions";
 import { getCurrentAdmin } from "@/lib/admin-auth";
@@ -19,11 +20,7 @@ export default async function AdminLoginPage({
     <main className="admin-login-page">
       <form className="admin-login-card" action={signInAdmin}>
         <a className="brand" href="/" aria-label="Natolli Studio">
-          <span className="brand-mark">N</span>
-          <span>
-            <strong>Natolli</strong>
-            <small>Admin</small>
-          </span>
+          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Admin" width={132} height={86} priority />
         </a>
 
         <div>

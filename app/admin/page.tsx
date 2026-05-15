@@ -9,7 +9,7 @@ import {
 } from "@/app/admin/actions";
 import { signOutAdmin } from "@/app/admin/auth-actions";
 import { requireAdmin } from "@/lib/admin-auth";
-import { getAdminOrders, type AdminOrder } from "@/lib/orders";
+import { getAdminOrders, orderStatusValues, type AdminOrder } from "@/lib/orders";
 import { formatPriceFromCents, getAdminProducts, type AdminProduct } from "@/lib/products";
 
 function priceInputValue(product: AdminProduct) {
@@ -17,11 +17,11 @@ function priceInputValue(product: AdminProduct) {
 }
 
 const orderStatuses = [
-  { value: "pending", label: "Pendente" },
-  { value: "paid", label: "Pago" },
-  { value: "in_production", label: "Em producao" },
-  { value: "completed", label: "Finalizado" },
-  { value: "canceled", label: "Cancelado" },
+  { value: orderStatusValues[0], label: "Pendente" },
+  { value: orderStatusValues[1], label: "Pago" },
+  { value: orderStatusValues[2], label: "Em producao" },
+  { value: orderStatusValues[3], label: "Finalizado" },
+  { value: orderStatusValues[4], label: "Cancelado" },
 ];
 
 function orderStatusLabel(status: string) {
@@ -52,11 +52,7 @@ export default async function AdminPage({
     <main className="admin-page">
       <section className="admin-header">
         <a className="brand" href="/" aria-label="Voltar para Natolli Studio">
-          <span className="brand-mark">N</span>
-          <span>
-            <strong>Natolli</strong>
-            <small>Admin</small>
-          </span>
+          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Admin" width={132} height={86} priority />
         </a>
         <div>
           <p className="eyebrow">Painel administrativo</p>

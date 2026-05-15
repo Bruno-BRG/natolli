@@ -2,6 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { attachPaymentPreference, createPendingOrder } from "@/lib/orders";
 import { findProduct } from "@/lib/products";
 
+function cleanText(value: FormDataEntryValue | null, maxLength: number) {
+  return String(value ?? "").trim().slice(0, maxLength);
+}
+
 export async function POST(request: NextRequest) {
   const token = process.env.MERCADO_PAGO_ACCESS_TOKEN;
 
@@ -11,12 +15,17 @@ export async function POST(request: NextRequest) {
 
   const formData = await request.formData();
   const selectedProduct = await findProduct(formData.get("product"));
-  const quantity = Math.max(1, Number.parseInt(String(formData.get("quantity") || "1"), 10) || 1);
-  const color = String(formData.get("color") || "A definir");
-  const customerName = String(formData.get("name") || "").trim();
-  const customerContact = String(formData.get("instagram") || "").trim();
-  const notes = String(formData.get("notes") || "").trim();
+  const requestedQuantity = Number.parseInt(String(formData.get("quantity") || "1"), 10) || 1;
+  const quantity = Math.min(20, Math.max(1, requestedQuantity));
+  const color = cleanText(formData.get("color"), 80) || "A definir";
+  const customerName = cleanText(formData.get("name"), 120);
+  const customerContact = cleanText(formData.get("instagram"), 120);
+  const notes = cleanText(formData.get("notes"), 1000);
   let orderId: string | null = null;
+
+  if (!selectedProduct.id || !customerName || !customerContact) {
+    return NextResponse.redirect(new URL("/?paymentError=invalid-order#pedido", request.url), 303);
+  }
 
   try {
     orderId = await createPendingOrder({

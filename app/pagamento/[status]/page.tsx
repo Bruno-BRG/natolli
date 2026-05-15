@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 const statusCopy = {
@@ -35,11 +36,7 @@ export default async function PaymentStatus({
     <main className="status-page">
       <section className="status-card">
         <Link className="brand" href="/" aria-label="Natolli Studio">
-          <span className="brand-mark">N</span>
-          <span>
-            <strong>Natolli</strong>
-            <small>Studio artesanal</small>
-          </span>
+          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Studio" width={132} height={86} priority />
         </Link>
 
         <p className="eyebrow">{copy.eyebrow}</p>

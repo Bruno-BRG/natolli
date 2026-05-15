@@ -15,11 +15,7 @@ export default async function Home({
     <>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Natolli Studio">
-          <span className="brand-mark">N</span>
-          <span>
-            <strong>Natolli</strong>
-            <small>Studio artesanal</small>
-          </span>
+          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Studio" width={132} height={86} priority />
         </a>
         <nav aria-label="Navegacao principal">
           <a href="#catalogo">Catalogo</a>
@@ -140,7 +136,9 @@ async function PaymentMessage({
       <p>
         {params.paymentError === "missing-token"
           ? "Configure MERCADO_PAGO_ACCESS_TOKEN na Vercel antes de receber pagamentos."
-          : "Nao foi possivel iniciar o pagamento. Confira as credenciais do Mercado Pago."}
+          : params.paymentError === "invalid-order"
+            ? "Preencha nome, Instagram e produto antes de iniciar o pagamento."
+            : "Nao foi possivel iniciar o pagamento. Confira as credenciais do Mercado Pago."}
       </p>
     </div>
   );

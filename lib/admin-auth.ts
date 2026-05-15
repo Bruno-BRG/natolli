@@ -2,24 +2,16 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-const defaultAdminUserIds = ["a52301a0-eaca-4e2e-ba35-97a779b92f49"];
-
 function getAllowedAdminUserIds() {
-  const configuredIds = process.env.ADMIN_USER_IDS?.split(",") ?? [];
-
-  return [...defaultAdminUserIds, ...configuredIds]
+  return (process.env.ADMIN_USER_IDS?.split(",") ?? [])
     .map((value) => value.trim().toLowerCase())
     .filter(Boolean);
 }
 
 export function isAdminEmail(email?: string | null) {
-  const allowedEmails = process.env.ADMIN_EMAILS?.split(",")
+  const allowedEmails = (process.env.ADMIN_EMAILS?.split(",") ?? [])
     .map((value) => value.trim().toLowerCase())
     .filter(Boolean);
-
-  if (!allowedEmails?.length) {
-    return true;
-  }
 
   return Boolean(email && allowedEmails.includes(email.toLowerCase()));
 }

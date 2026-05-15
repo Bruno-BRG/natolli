@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-auth";
-import { createManualOrder as insertManualOrder, updateOrderStatus as saveOrderStatus } from "@/lib/orders";
+import {
+  createManualOrder as insertManualOrder,
+  orderStatusValues,
+  type OrderStatus,
+  updateOrderStatus as saveOrderStatus,
+} from "@/lib/orders";
 import { createAdminClient } from "@/utils/supabase/admin";
 
 const PRODUCT_IMAGES_BUCKET = "product-images";
@@ -44,6 +49,10 @@ function parseQuantity(value: FormDataEntryValue | null) {
 
 function getText(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
+}
+
+function getOrderStatus(value: string): OrderStatus | null {
+  return orderStatusValues.includes(value as OrderStatus) ? (value as OrderStatus) : null;
 }
 
 function redirectWithError(message: string): never {
@@ -250,11 +259,11 @@ export async function createManualOrder(formData: FormData) {
   const customerName = getText(formData, "customer_name");
   const customerContact = getText(formData, "customer_contact");
   const notes = getText(formData, "notes");
-  const status = getText(formData, "status") || "pending";
+  const status = getOrderStatus(getText(formData, "status") || "pending");
   const quantity = parseQuantity(formData.get("quantity"));
   const priceCents = parsePriceToCents(formData.get("price"));
 
-  if (!productName || !customerName || !quantity || !priceCents) {
+  if (!productName || !customerName || !quantity || !priceCents || !status) {
     redirect("/admin?status=invalid-order");
   }
 
@@ -283,7 +292,7 @@ export async function updateOrderStatus(formData: FormData) {
   await requireAdmin();
 
   const id = getText(formData, "id");
-  const status = getText(formData, "status");
+  const status = getOrderStatus(getText(formData, "status"));
 
   if (!id || !status) {
     redirect("/admin?status=invalid-order");

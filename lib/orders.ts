@@ -1,5 +1,9 @@
 import { createAdminClient } from "@/utils/supabase/admin";
 
+export const orderStatusValues = ["pending", "paid", "in_production", "completed", "canceled"] as const;
+
+export type OrderStatus = (typeof orderStatusValues)[number];
+
 export type AdminOrder = {
   id: string;
   productId: string | null;
@@ -11,7 +15,7 @@ export type AdminOrder = {
   customerName: string;
   customerPhone: string;
   notes: string;
-  status: string;
+  status: OrderStatus | string;
   orderSource: string;
   paymentProvider: string;
   paymentPreferenceId: string | null;
@@ -126,7 +130,7 @@ export async function createManualOrder(order: {
   customerName: string;
   customerContact: string;
   notes: string;
-  status: string;
+  status: OrderStatus;
 }) {
   const supabase = createAdminClient();
   const totalCents = order.unitPriceCents * order.quantity;
@@ -150,7 +154,7 @@ export async function createManualOrder(order: {
   }
 }
 
-export async function updateOrderStatus(orderId: string, status: string) {
+export async function updateOrderStatus(orderId: string, status: OrderStatus) {
   const supabase = createAdminClient();
   const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
 

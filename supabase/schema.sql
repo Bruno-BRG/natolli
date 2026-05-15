@@ -19,8 +19,8 @@ create table if not exists public.orders (
   customer_name text not null,
   customer_phone text not null,
   notes text,
-  status text not null default 'pending',
-  order_source text not null default 'site',
+  status text not null default 'pending' check (status in ('pending', 'paid', 'in_production', 'completed', 'canceled')),
+  order_source text not null default 'site' check (order_source in ('site', 'manual')),
   payment_provider text not null default 'mercado_pago',
   payment_preference_id text,
   created_at timestamptz not null default now()
@@ -28,6 +28,18 @@ create table if not exists public.orders (
 
 alter table public.orders
 add column if not exists order_source text not null default 'site';
+
+alter table public.orders
+drop constraint if exists orders_status_check;
+
+alter table public.orders
+add constraint orders_status_check check (status in ('pending', 'paid', 'in_production', 'completed', 'canceled'));
+
+alter table public.orders
+drop constraint if exists orders_source_check;
+
+alter table public.orders
+add constraint orders_source_check check (order_source in ('site', 'manual'));
 
 alter table public.products enable row level security;
 alter table public.orders enable row level security;
