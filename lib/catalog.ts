@@ -1,5 +1,3 @@
-export const WHATSAPP_NUMBER = "5571999999999";
-
 export const products = [
   {
     id: "bolsa-bordo",
@@ -47,24 +45,3 @@ export const colors = [
   "Ciano",
   "Verde musgo",
 ] as const;
-
-export function buildWhatsAppUrl(order: {
-  product: string;
-  color: string;
-  quantity: string;
-  name: string;
-  phone: string;
-  notes: string;
-}) {
-  const message = [
-    "Ola, Natolli! Quero fazer um pedido:",
-    `Produto: ${order.product}`,
-    `Cor: ${order.color}`,
-    `Quantidade: ${order.quantity}`,
-    `Nome: ${order.name}`,
-    `Contato: ${order.phone}`,
-    `Observacoes: ${order.notes || "Sem observacoes"}`,
-  ].join("\n");
-
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}

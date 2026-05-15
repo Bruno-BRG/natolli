@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-auth";
+import { createManualOrder as insertManualOrder, updateOrderStatus as saveOrderStatus } from "@/lib/orders";
 import { createAdminClient } from "@/utils/supabase/admin";
 
 const PRODUCT_IMAGES_BUCKET = "product-images";
@@ -29,6 +30,16 @@ function parsePriceToCents(value: FormDataEntryValue | null) {
   }
 
   return Math.round(price * 100);
+}
+
+function parseQuantity(value: FormDataEntryValue | null) {
+  const quantity = Number.parseInt(String(value ?? "1"), 10);
+
+  if (!Number.isFinite(quantity) || quantity <= 0) {
+    return null;
+  }
+
+  return quantity;
 }
 
 function getText(formData: FormData, key: string) {
@@ -228,4 +239,63 @@ export async function deleteProduct(formData: FormData) {
 
   refreshAdmin();
   redirect("/admin?status=deleted");
+}
+
+export async function createManualOrder(formData: FormData) {
+  await requireAdmin();
+
+  const productId = getText(formData, "product_id");
+  const productName = getText(formData, "product_name");
+  const color = getText(formData, "color") || "A definir";
+  const customerName = getText(formData, "customer_name");
+  const customerContact = getText(formData, "customer_contact");
+  const notes = getText(formData, "notes");
+  const status = getText(formData, "status") || "pending";
+  const quantity = parseQuantity(formData.get("quantity"));
+  const priceCents = parsePriceToCents(formData.get("price"));
+
+  if (!productName || !customerName || !quantity || !priceCents) {
+    redirect("/admin?status=invalid-order");
+  }
+
+  try {
+    await insertManualOrder({
+      productId: productId || null,
+      productName,
+      color,
+      quantity,
+      unitPriceCents: priceCents,
+      customerName,
+      customerContact,
+      notes,
+      status,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Nao foi possivel registrar o pedido.";
+    redirectWithError(message);
+  }
+
+  refreshAdmin();
+  redirect("/admin?status=order-created#pedidos");
+}
+
+export async function updateOrderStatus(formData: FormData) {
+  await requireAdmin();
+
+  const id = getText(formData, "id");
+  const status = getText(formData, "status");
+
+  if (!id || !status) {
+    redirect("/admin?status=invalid-order");
+  }
+
+  try {
+    await saveOrderStatus(id, status);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Nao foi possivel atualizar o pedido.";
+    redirectWithError(message);
+  }
+
+  refreshAdmin();
+  redirect("/admin?status=order-updated#pedidos");
 }

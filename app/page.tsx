@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { OrderForm } from "@/app/components/order-form";
-import { colors, WHATSAPP_NUMBER } from "@/lib/catalog";
+import { colors } from "@/lib/catalog";
 import { getProducts } from "@/lib/products";
 
 export default async function Home({
@@ -37,8 +37,7 @@ export default async function Home({
             <p className="eyebrow">Feito a mao em Salvador</p>
             <h1>Bolsas e pecas artesanais com a sua cor, o seu jeito e acabamento sob encomenda.</h1>
             <p>
-              Escolha um modelo, selecione a linha e envie seu pedido. A confirmacao final de prazo,
-              valor e pagamento pode ser feita pelo WhatsApp.
+              Escolha um modelo, selecione a linha e acompanhe seu pedido pelo Instagram da Natolli.
             </p>
             <div className="hero-actions">
               <a className="button primary" href="#pedido">
@@ -101,14 +100,18 @@ export default async function Home({
 
         <section id="contato" className="section contact-section">
           <div>
-            <p className="eyebrow">Contato e pagamento</p>
-            <h2>Atendimento direto e pagamento simples</h2>
+            <p className="eyebrow">Contato</p>
+            <h2>Atendimento pelo Instagram</h2>
             <p>
-              Placeholder de contato: Instagram @natolli_studio,
-              Salvador - Bahia.
+              Fale com a Natolli pelo Instagram para tirar duvidas sobre cores, prazos e encomendas especiais.
             </p>
           </div>
           <div className="payment-notes">
+            <h3>@natolli_studio</h3>
+            <p>Salvador - Bahia</p>
+            <a className="button primary" href="https://www.instagram.com/natolli_studio" target="_blank" rel="noreferrer">
+              Abrir Instagram
+            </a>
           </div>
         </section>
       </main>

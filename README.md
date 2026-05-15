@@ -13,13 +13,13 @@ Abra `http://localhost:3000/`.
 
 ## Contatos para trocar
 
-- WhatsApp, produtos e cores: `lib/catalog.ts`
+- Produtos e cores: `lib/catalog.ts`
 - Instagram e cidade: `app/page.tsx`, seção `contato`
 - Visual: `app/globals.css`
 
 ## Pagamento recomendado
 
-Para começar, o caminho mais simples é confirmar pedidos pelo WhatsApp e receber por Pix manual. Isso evita custo e complexidade antes de validar preços, prazos e demanda.
+Para começar, o caminho mais simples é centralizar o contato pelo Instagram e receber por Pix manual quando o pagamento online nao estiver configurado.
 
 Quando a loja tiver volume, integre Mercado Pago Checkout Pro. Ele redireciona o cliente para o ambiente do Mercado Pago e permite cartão, Pix, boleto e carteira Mercado Pago, mantendo menos responsabilidade técnica no site do que um checkout transparente.
 
@@ -79,3 +79,5 @@ No admin da loja:
 - exclua produtos quando nao forem mais necessarios.
 
 O historico de compras aparece no mesmo painel. Quando o cliente inicia pagamento pelo Mercado Pago, o pedido e salvo em `orders` com status `pending`. O proximo passo de producao e adicionar webhook do Mercado Pago para trocar automaticamente para aprovado, pendente ou recusado.
+
+Pedidos feitos fora do site podem ser cadastrados manualmente no painel. A coluna `order_source` separa `site` de `manual`; rode novamente o SQL de `supabase/schema.sql` no Supabase se a tabela `orders` ja existia antes dessa coluna.

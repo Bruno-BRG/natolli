@@ -12,6 +12,7 @@ export type AdminOrder = {
   customerPhone: string;
   notes: string;
   status: string;
+  orderSource: string;
   paymentProvider: string;
   paymentPreferenceId: string | null;
   createdAt: string;
@@ -29,6 +30,7 @@ type OrderRow = {
   customer_phone: string;
   notes: string | null;
   status: string;
+  order_source: string | null;
   payment_provider: string;
   payment_preference_id: string | null;
   created_at: string;
@@ -47,6 +49,7 @@ function mapOrder(row: OrderRow): AdminOrder {
     customerPhone: row.customer_phone,
     notes: row.notes ?? "",
     status: row.status,
+    orderSource: row.order_source ?? "site",
     paymentProvider: row.payment_provider,
     paymentPreferenceId: row.payment_preference_id,
     createdAt: row.created_at,
@@ -59,7 +62,7 @@ export async function getAdminOrders() {
     const { data, error } = await supabase
       .from("orders")
       .select(
-        "id,product_id,product_name,color,quantity,unit_price_cents,total_cents,customer_name,customer_phone,notes,status,payment_provider,payment_preference_id,created_at",
+        "id,product_id,product_name,color,quantity,unit_price_cents,total_cents,customer_name,customer_phone,notes,status,order_source,payment_provider,payment_preference_id,created_at",
       )
       .order("created_at", { ascending: false })
       .limit(100);
@@ -101,6 +104,7 @@ export async function createPendingOrder(order: {
       customer_phone: order.customerPhone,
       notes: order.notes,
       status: "pending",
+      order_source: "site",
       payment_provider: "mercado_pago",
     })
     .select("id")
@@ -111,6 +115,48 @@ export async function createPendingOrder(order: {
   }
 
   return data.id as string;
+}
+
+export async function createManualOrder(order: {
+  productId: string | null;
+  productName: string;
+  color: string;
+  quantity: number;
+  unitPriceCents: number;
+  customerName: string;
+  customerContact: string;
+  notes: string;
+  status: string;
+}) {
+  const supabase = createAdminClient();
+  const totalCents = order.unitPriceCents * order.quantity;
+  const { error } = await supabase.from("orders").insert({
+    product_id: order.productId,
+    product_name: order.productName,
+    color: order.color,
+    quantity: order.quantity,
+    unit_price_cents: order.unitPriceCents,
+    total_cents: totalCents,
+    customer_name: order.customerName,
+    customer_phone: order.customerContact,
+    notes: order.notes,
+    status: order.status,
+    order_source: "manual",
+    payment_provider: "manual",
+  });
+
+  if (error) {
+    throw error;
+  }
+}
+
+export async function updateOrderStatus(orderId: string, status: string) {
+  const supabase = createAdminClient();
+  const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
+
+  if (error) {
+    throw error;
+  }
 }
 
 export async function attachPaymentPreference(orderId: string, preferenceId: string) {

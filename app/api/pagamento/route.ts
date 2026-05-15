@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   const quantity = Math.max(1, Number.parseInt(String(formData.get("quantity") || "1"), 10) || 1);
   const color = String(formData.get("color") || "A definir");
   const customerName = String(formData.get("name") || "").trim();
-  const customerPhone = String(formData.get("phone") || "").trim();
+  const customerContact = String(formData.get("instagram") || "").trim();
   const notes = String(formData.get("notes") || "").trim();
   let orderId: string | null = null;
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       quantity,
       unitPriceCents: Math.round(selectedProduct.unitPrice * 100),
       customerName,
-      customerPhone,
+      customerPhone: customerContact,
       notes,
     });
   } catch (error) {
@@ -45,7 +45,6 @@ export async function POST(request: NextRequest) {
     ],
     payer: {
       name: customerName,
-      phone: { number: customerPhone },
     },
     back_urls: {
       success: `${baseUrl}/pagamento/sucesso`,
@@ -54,13 +53,13 @@ export async function POST(request: NextRequest) {
     },
     auto_return: "approved",
     statement_descriptor: "NATOLLI",
-    external_reference: orderId ?? `${selectedProduct.id}|${color}|${customerPhone}`,
+    external_reference: orderId ?? `${selectedProduct.id}|${color}|${customerContact}`,
     metadata: {
       order_id: orderId,
       product: selectedProduct.name,
       color,
       customer_name: customerName,
-      customer_phone: customerPhone,
+      customer_contact: customerContact,
       notes,
     },
   };

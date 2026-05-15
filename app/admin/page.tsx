@@ -1,8 +1,10 @@
 import Image from "next/image";
 import {
+  createManualOrder,
   createProduct,
   deleteProduct,
   toggleProduct,
+  updateOrderStatus,
   updateProduct,
 } from "@/app/admin/actions";
 import { signOutAdmin } from "@/app/admin/auth-actions";
@@ -12,6 +14,22 @@ import { formatPriceFromCents, getAdminProducts, type AdminProduct } from "@/lib
 
 function priceInputValue(product: AdminProduct) {
   return product.unitPrice.toFixed(2).replace(".", ",");
+}
+
+const orderStatuses = [
+  { value: "pending", label: "Pendente" },
+  { value: "paid", label: "Pago" },
+  { value: "in_production", label: "Em producao" },
+  { value: "completed", label: "Finalizado" },
+  { value: "canceled", label: "Cancelado" },
+];
+
+function orderStatusLabel(status: string) {
+  return orderStatuses.find((option) => option.value === status)?.label ?? status;
+}
+
+function orderSourceLabel(source: string) {
+  return source === "manual" ? "Fora do site" : "Site";
 }
 
 export default async function AdminPage({
@@ -26,6 +44,8 @@ export default async function AdminPage({
   const archivedProducts = products.filter((product) => !product.active);
   const totalValue = activeProducts.reduce((sum, product) => sum + product.unitPrice, 0);
   const pendingOrders = orders.filter((order) => order.status === "pending");
+  const siteOrders = orders.filter((order) => order.orderSource === "site");
+  const manualOrders = orders.filter((order) => order.orderSource === "manual");
   const orderRevenue = orders.reduce((sum, order) => sum + order.total, 0);
 
   return (
@@ -40,7 +60,7 @@ export default async function AdminPage({
         </a>
         <div>
           <p className="eyebrow">Painel administrativo</p>
-          <h1>Produtos</h1>
+          <h1>Dashboard</h1>
           <p className="admin-user">Conectado como {user.email}</p>
         </div>
         <form action={signOutAdmin}>
@@ -50,9 +70,16 @@ export default async function AdminPage({
         </form>
       </section>
 
+      <nav className="admin-nav" aria-label="Navegacao do painel">
+        <a href="#resumo">Resumo</a>
+        <a href="#pedidos">Pedidos</a>
+        <a href="#produtos">Produtos</a>
+        <a href="/">Ver loja</a>
+      </nav>
+
       {params?.status ? <AdminStatus status={params.status} message={params.message} /> : null}
 
-      <section className="admin-stats" aria-label="Resumo do catalogo">
+      <section id="resumo" className="admin-stats" aria-label="Resumo do catalogo">
         <div>
           <span>{activeProducts.length}</span>
           <p>Produtos publicados</p>
@@ -70,6 +97,14 @@ export default async function AdminPage({
           <p>Pedidos no historico</p>
         </div>
         <div>
+          <span>{siteOrders.length}</span>
+          <p>Pedidos pelo site</p>
+        </div>
+        <div>
+          <span>{manualOrders.length}</span>
+          <p>Pedidos fora do site</p>
+        </div>
+        <div>
           <span>{pendingOrders.length}</span>
           <p>Pedidos pendentes</p>
         </div>
@@ -79,15 +114,20 @@ export default async function AdminPage({
         </div>
       </section>
 
-      <section className="admin-orders">
-        <div className="section-heading">
-          <p className="eyebrow">Compras</p>
-          <h2>Historico de pedidos</h2>
+      <section id="pedidos" className="admin-orders">
+        <div className="admin-orders-layout">
+          <ManualOrderForm products={products} />
+          <div>
+            <div className="section-heading">
+              <p className="eyebrow">Compras</p>
+              <h2>Historico de pedidos</h2>
+            </div>
+            <OrderHistory orders={orders} />
+          </div>
         </div>
-        <OrderHistory orders={orders} />
       </section>
 
-      <section className="admin-layout">
+      <section id="produtos" className="admin-layout">
         <NewProductForm />
 
         <div className="admin-products">
@@ -112,7 +152,7 @@ function OrderHistory({ orders }: { orders: AdminOrder[] }) {
     return (
       <div className="admin-empty">
         <h3>Nenhum pedido registrado ainda</h3>
-        <p>Quando o cliente iniciar um pagamento pelo site, o pedido aparece aqui como pendente.</p>
+        <p>Pedidos pelo site ou cadastrados manualmente aparecem aqui.</p>
       </div>
     );
   }
@@ -123,15 +163,16 @@ function OrderHistory({ orders }: { orders: AdminOrder[] }) {
         <span>Data</span>
         <span>Cliente</span>
         <span>Produto</span>
-        <span>Status</span>
+        <span>Origem</span>
         <span>Total</span>
+        <span>Status</span>
       </div>
       {orders.map((order) => (
         <article className="admin-order-row" role="row" key={order.id}>
           <span>{new Date(order.createdAt).toLocaleDateString("pt-BR")}</span>
           <span>
             <strong>{order.customerName || "Sem nome"}</strong>
-            <small>{order.customerPhone || "Sem telefone"}</small>
+            <small>{order.customerPhone || "Sem contato"}</small>
           </span>
           <span>
             <strong>{order.productName}</strong>
@@ -141,13 +182,103 @@ function OrderHistory({ orders }: { orders: AdminOrder[] }) {
             {order.notes ? <small>{order.notes}</small> : null}
           </span>
           <span>
-            <mark>{order.status}</mark>
+            <mark>{orderSourceLabel(order.orderSource)}</mark>
             <small>{order.paymentProvider}</small>
           </span>
           <span>{formatPriceFromCents(Math.round(order.total * 100))}</span>
+          <span>
+            <form className="inline-status-form" action={updateOrderStatus}>
+              <input name="id" type="hidden" value={order.id} />
+              <select name="status" defaultValue={order.status} aria-label="Status do pedido">
+                {orderStatuses.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+              <button className="button secondary" type="submit">
+                Salvar
+              </button>
+            </form>
+            <small>{orderStatusLabel(order.status)}</small>
+          </span>
         </article>
       ))}
     </div>
+  );
+}
+
+function ManualOrderForm({ products }: { products: AdminProduct[] }) {
+  return (
+    <form className="admin-form manual-order-form" action={createManualOrder}>
+      <div>
+        <p className="eyebrow">Pedido fora do site</p>
+        <h2>Registrar pedido</h2>
+      </div>
+
+      <label>
+        Produto do catalogo
+        <select name="product_id" defaultValue="">
+          <option value="">Sem vinculo</option>
+          {products.map((product) => (
+            <option key={product.id} value={product.id}>
+              {product.name}
+            </option>
+          ))}
+        </select>
+        <small>Use como referencia. O nome e preco abaixo ficam salvos no historico.</small>
+      </label>
+
+      <label>
+        Nome do produto
+        <input name="product_name" type="text" placeholder="Bolsa tiracolo preta" required />
+      </label>
+
+      <label>
+        Preco unitario
+        <input name="price" type="text" inputMode="decimal" placeholder="189,90" required />
+      </label>
+
+      <label>
+        Quantidade
+        <input name="quantity" type="number" min="1" defaultValue="1" required />
+      </label>
+
+      <label>
+        Cor
+        <input name="color" type="text" placeholder="Bordo" />
+      </label>
+
+      <label>
+        Cliente
+        <input name="customer_name" type="text" placeholder="Nome da cliente" required />
+      </label>
+
+      <label>
+        Contato
+        <input name="customer_contact" type="text" placeholder="@instagram ou outro contato" />
+      </label>
+
+      <label>
+        Status
+        <select name="status" defaultValue="pending">
+          {orderStatuses.map((status) => (
+            <option key={status.value} value={status.value}>
+              {status.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        Observacoes
+        <textarea name="notes" rows={4} placeholder="Detalhes combinados, prazo, entrega, pagamento..." />
+      </label>
+
+      <button className="button primary" type="submit">
+        Adicionar ao historico
+      </button>
+    </form>
   );
 }
 

@@ -5,7 +5,7 @@ const statusCopy = {
   sucesso: {
     eyebrow: "Pagamento aprovado",
     title: "Seu pedido foi recebido.",
-    body: "Vamos confirmar os detalhes da encomenda pelo WhatsApp.",
+    body: "A Natolli vai acompanhar os detalhes da encomenda pelo Instagram informado no pedido.",
   },
   pendente: {
     eyebrow: "Pagamento pendente",
@@ -15,7 +15,7 @@ const statusCopy = {
   falha: {
     eyebrow: "Pagamento nao concluido",
     title: "Nao conseguimos finalizar o pagamento.",
-    body: "Voce pode tentar novamente ou chamar a Natolli pelo WhatsApp.",
+    body: "Voce pode tentar novamente ou falar com a Natolli pelo Instagram.",
   },
 } as const;
 

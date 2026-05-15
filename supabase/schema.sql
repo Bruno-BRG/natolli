@@ -20,16 +20,21 @@ create table if not exists public.orders (
   customer_phone text not null,
   notes text,
   status text not null default 'pending',
+  order_source text not null default 'site',
   payment_provider text not null default 'mercado_pago',
   payment_preference_id text,
   created_at timestamptz not null default now()
 );
+
+alter table public.orders
+add column if not exists order_source text not null default 'site';
 
 alter table public.products enable row level security;
 alter table public.orders enable row level security;
 
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);
+create index if not exists orders_source_idx on public.orders (order_source);
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (

@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { buildWhatsAppUrl, colors } from "@/lib/catalog";
+import { useState } from "react";
+import { colors } from "@/lib/catalog";
 import type { Product } from "@/lib/products";
 
 type Order = {
@@ -9,7 +9,7 @@ type Order = {
   color: string;
   quantity: string;
   name: string;
-  phone: string;
+  instagram: string;
   notes: string;
 };
 
@@ -19,7 +19,7 @@ function createInitialOrder(products: Product[]): Order {
     color: colors[0],
     quantity: "1",
     name: "",
-    phone: "",
+    instagram: "",
     notes: "",
   };
 }
@@ -44,19 +44,6 @@ export function OrderForm({
   const [submitted, setSubmitted] = useState(false);
 
   const selectedProduct = products.find((product) => product.id === order.productId) ?? products[0] ?? emptyProduct;
-
-  const whatsappUrl = useMemo(
-    () =>
-      buildWhatsAppUrl({
-        product: selectedProduct.name,
-        color: order.color,
-        quantity: order.quantity,
-        name: order.name,
-        phone: order.phone,
-        notes: order.notes,
-      }),
-    [order, selectedProduct.name],
-  );
 
   function update<K extends keyof Order>(key: K, value: Order[K]) {
     setOrder((current) => ({ ...current, [key]: value }));
@@ -118,14 +105,14 @@ export function OrderForm({
           />
         </label>
         <label>
-          WhatsApp
+          Instagram
           <input
-            type="tel"
-            name="phone"
-            placeholder="Ex.: (71) 99999-9999"
+            type="text"
+            name="instagram"
+            placeholder="Ex.: @natolli_studio"
             required
-            value={order.phone}
-            onChange={(event) => update("phone", event.target.value)}
+            value={order.instagram}
+            onChange={(event) => update("instagram", event.target.value)}
           />
         </label>
         <label className="full">
@@ -139,13 +126,13 @@ export function OrderForm({
           />
         </label>
         <button className="button primary full" type="submit">
-          Gerar pedido
+          Revisar pedido
         </button>
       </form>
 
       {submitted ? (
         <aside className="order-summary" aria-live="polite">
-          <h3>Pedido pronto para envio</h3>
+          <h3>Pedido pronto</h3>
           <p>
             <strong>Produto:</strong> {selectedProduct.name}
           </p>
@@ -158,16 +145,16 @@ export function OrderForm({
           <p>
             <strong>Cliente:</strong> {order.name}
           </p>
-          <a className="button primary" href={whatsappUrl} target="_blank" rel="noreferrer">
-            Enviar no WhatsApp
-          </a>
+          <p>
+            <strong>Instagram:</strong> {order.instagram}
+          </p>
           {mercadoPagoEnabled ? (
             <form className="payment-form" action="/api/pagamento" method="post">
               <input type="hidden" name="product" value={order.productId} />
               <input type="hidden" name="color" value={order.color} />
               <input type="hidden" name="quantity" value={order.quantity} />
               <input type="hidden" name="name" value={order.name} />
-              <input type="hidden" name="phone" value={order.phone} />
+              <input type="hidden" name="instagram" value={order.instagram} />
               <input type="hidden" name="notes" value={order.notes} />
               <button className="button payment-button" type="submit">
                 Pagar com Mercado Pago
@@ -175,7 +162,7 @@ export function OrderForm({
             </form>
           ) : (
             <p className="setup-note">
-              Mercado Pago pronto no codigo. Falta configurar a variavel MERCADO_PAGO_ACCESS_TOKEN na Vercel.
+              Pagamento online pronto no codigo. Falta configurar a variavel MERCADO_PAGO_ACCESS_TOKEN na Vercel.
             </p>
           )}
         </aside>

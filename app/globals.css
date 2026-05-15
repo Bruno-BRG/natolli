@@ -412,6 +412,13 @@ textarea {
   color: var(--coffee);
 }
 
+.payment-notes .button {
+  width: 100%;
+  margin-top: 12px;
+  background: var(--paper-soft);
+  color: var(--coffee);
+}
+
 .payment-form {
   margin-top: 12px;
 }
@@ -500,6 +507,32 @@ textarea {
   color: #66584e;
 }
 
+.admin-nav {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 10px;
+  background: rgba(255, 250, 244, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  backdrop-filter: blur(14px);
+}
+
+.admin-nav a {
+  padding: 10px 12px;
+  border-radius: 4px;
+  color: var(--coffee);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-nav a:hover {
+  background: rgba(91, 73, 59, 0.08);
+}
+
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -534,6 +567,21 @@ textarea {
   border-radius: 8px;
 }
 
+.admin-orders-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.manual-order-form {
+  position: static;
+}
+
+.manual-order-form h2 {
+  font-size: 30px;
+}
+
 .admin-order-table {
   display: grid;
   gap: 8px;
@@ -541,7 +589,7 @@ textarea {
 
 .admin-order-row {
   display: grid;
-  grid-template-columns: 110px 1fr 1.35fr 120px 110px;
+  grid-template-columns: 92px 1fr 1.25fr 112px 100px 150px;
   gap: 14px;
   align-items: center;
   padding: 12px 14px;
@@ -581,6 +629,22 @@ textarea {
   border-radius: 4px;
   color: var(--wine);
   font-weight: 800;
+}
+
+.inline-status-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.inline-status-form select {
+  padding: 9px 10px;
+}
+
+.inline-status-form .button {
+  min-height: 38px;
+  padding: 0 12px;
 }
 
 .admin-empty {
@@ -798,8 +862,10 @@ footer {
   .order-section,
   .contact-section,
   .admin-header,
+  .admin-nav,
   .admin-stats,
   .admin-order-row,
+  .admin-orders-layout,
   .admin-layout {
     display: block;
   }
@@ -816,6 +882,7 @@ footer {
   .hero-media,
   .order-summary,
   .payment-notes,
+  .manual-order-form,
   .admin-products {
     margin-top: 24px;
   }
@@ -877,5 +944,9 @@ footer {
   .admin-order-row span {
     display: block;
     margin-bottom: 10px;
+  }
+
+  .inline-status-form {
+    grid-template-columns: 1fr;
   }
 }
