@@ -46,6 +46,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://okflipyzwrvazcmobdxt.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 SUPABASE_SERVICE_ROLE_KEY=service_role_...
 ADMIN_EMAILS=admin@natolli.com
+ADMIN_USER_IDS=a52301a0-eaca-4e2e-ba35-97a779b92f49
 ```
 
 Use credenciais de teste primeiro. Depois troque para a credencial de produção da conta que vai receber os pagamentos.
@@ -60,7 +61,7 @@ Para acessar o admin com login e senha:
 
 1. No Supabase, abra Authentication > Users.
 2. Crie um usuario com e-mail e senha.
-3. Coloque esse e-mail em `ADMIN_EMAILS`. Para mais de um admin, separe por virgula.
+3. Coloque esse e-mail em `ADMIN_EMAILS` ou o UUID em `ADMIN_USER_IDS`. Para mais de um admin, separe por virgula.
 4. Acesse `/admin/login`.
 
 Depois de configurar a chave, voce pode subir as imagens atuais de `public/loja/img` para o Supabase Storage e atualizar os produtos iniciais:

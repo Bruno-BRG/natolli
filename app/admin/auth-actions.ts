@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isAdminEmail } from "@/lib/admin-auth";
+import { isAdminUser } from "@/lib/admin-auth";
 import { createClient } from "@/utils/supabase/server";
 
 export async function signInAdmin(formData: FormData) {
@@ -25,7 +25,7 @@ export async function signInAdmin(formData: FormData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!isAdminEmail(user?.email)) {
+  if (!isAdminUser(user)) {
     await supabase.auth.signOut();
     redirect("/admin/login?status=unauthorized");
   }

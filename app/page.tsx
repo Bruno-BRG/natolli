@@ -104,16 +104,11 @@ export default async function Home({
             <p className="eyebrow">Contato e pagamento</p>
             <h2>Atendimento direto e pagamento simples</h2>
             <p>
-              Placeholder de contato: WhatsApp {WHATSAPP_NUMBER}, Instagram @natolli_studio,
-              Salvador - Bahia. Troque esses dados quando tiver os contatos finais.
+              Placeholder de contato: Instagram @natolli_studio,
+              Salvador - Bahia.
             </p>
           </div>
           <div className="payment-notes">
-            <h3>Recomendacao inicial</h3>
-            <p>
-              Comece com pedido por WhatsApp + Pix manual para validar os produtos. Quando o volume crescer,
-              integre Mercado Pago Checkout Pro para cartao, Pix, boleto e retorno automatico ao site.
-            </p>
           </div>
         </section>
       </main>
