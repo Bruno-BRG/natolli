@@ -36,7 +36,7 @@ export default async function PaymentStatus({
     <main className="status-page">
       <section className="status-card">
         <Link className="brand" href="/" aria-label="Natolli Studio">
-          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Studio" width={132} height={86} priority />
+          <Image className="brand-logo" src="/loja/img/logo-nome.png" alt="Natolli Studio" width={180} height={60} priority />
         </Link>
 
         <p className="eyebrow">{copy.eyebrow}</p>

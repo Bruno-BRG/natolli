@@ -145,7 +145,7 @@ export async function createProduct(formData: FormData) {
       id: productId,
       name,
       description,
-      image_url: uploadedImageUrl || manualImageUrl || "/loja/img/logo-natolli.png",
+      image_url: uploadedImageUrl || manualImageUrl || "/loja/img/logo-principal.png",
       price_cents: priceCents,
       active: true,
     });

@@ -41,7 +41,7 @@ function mapProduct(row: ProductRow): Product {
     id: row.id,
     name: row.name,
     description: row.description ?? "",
-    image: row.image_url || "/loja/img/logo-natolli.png",
+    image: row.image_url || "/loja/img/logo-principal.png",
     price: formatPriceFromCents(row.price_cents),
     unitPrice: row.price_cents / 100,
   };

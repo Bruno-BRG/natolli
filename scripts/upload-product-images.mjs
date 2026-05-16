@@ -32,11 +32,11 @@ const supabase = createClient(supabaseUrl, serviceRoleKey, {
 });
 
 const files = [
-  ["bolsa-bordo.png", "products/bolsa-bordo.png", "bolsa-bordo"],
-  ["bolsa-rosa.png", "products/bolsa-rosa.png", "bolsa-rosa"],
-  ["logo-natolli.png", "products/logo-natolli.png", "peca-personalizada"],
-  ["catalogo-cores-1.webp", "catalog/catalogo-cores-1.webp", null],
-  ["catalogo-cores-2.webp", "catalog/catalogo-cores-2.webp", null],
+  ["bolsa-bordo-alca-madeira.png", "products/bolsa-bordo-alca-madeira.png", "bolsa-bordo"],
+  ["bolsa-rosa-franja.png", "products/bolsa-rosa-franja.png", "bolsa-rosa"],
+  ["logo-principal.png", "products/logo-principal.png", "peca-personalizada"],
+  ["logo-nome.png", "brand/logo-nome.png", null],
+  ["logo-simbolo.png", "brand/logo-simbolo.png", null],
   ["fundo-folhas-direita.png", "brand/fundo-folhas-direita.png", null],
   ["fundo-folhas-esquerda.png", "brand/fundo-folhas-esquerda.png", null],
 ];

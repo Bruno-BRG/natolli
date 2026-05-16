@@ -52,7 +52,7 @@ export default async function AdminPage({
     <main className="admin-page">
       <section className="admin-header">
         <a className="brand" href="/" aria-label="Voltar para Natolli Studio">
-          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Admin" width={132} height={86} priority />
+          <Image className="brand-logo" src="/loja/img/logo-nome.png" alt="Natolli Admin" width={180} height={60} priority />
         </a>
         <div>
           <p className="eyebrow">Painel administrativo</p>

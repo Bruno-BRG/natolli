@@ -64,12 +64,12 @@ img {
 .brand {
   display: flex;
   align-items: center;
-  min-width: 132px;
+  min-width: 180px;
 }
 
 .brand-logo {
-  width: 132px;
-  height: 70px;
+  width: 180px;
+  height: 60px;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
@@ -231,7 +231,7 @@ h3 {
 .hero-media img {
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   object-fit: cover;
 }
 
@@ -293,39 +293,37 @@ h3 {
 }
 
 .color-layout {
+  display: block;
+}
+
+.color-card-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 28px;
-  align-items: start;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.color-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.color-list span {
-  padding: 10px 12px;
+.color-card {
+  overflow: hidden;
   background: var(--paper-soft);
   border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--coffee);
-  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(70, 48, 32, 0.07);
 }
 
-.catalog-images {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.catalog-images img {
+.color-card img {
   width: 100%;
   height: auto;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 16px 40px rgba(70, 48, 32, 0.08);
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.color-card span {
+  display: block;
+  padding: 10px 12px 12px;
+  color: var(--coffee);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
 }
 
 .order-section {
@@ -886,9 +884,12 @@ footer {
     margin-top: 24px;
   }
 
-  .product-grid,
-  .catalog-images {
+  .product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .color-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -902,12 +903,12 @@ footer {
   }
 
   .brand {
-    min-width: 104px;
+    min-width: 132px;
   }
 
   .brand-logo {
-    width: 104px;
-    height: 56px;
+    width: 132px;
+    height: 44px;
   }
 
   nav a {
@@ -921,6 +922,10 @@ footer {
   .order-form {
     grid-template-columns: 1fr;
     padding: 18px;
+  }
+
+  .color-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .admin-product {

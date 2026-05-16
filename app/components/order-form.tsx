@@ -29,7 +29,7 @@ const emptyProduct: Product = {
   name: "Produto",
   price: "R$ 0,00",
   unitPrice: 0,
-  image: "/loja/img/logo-natolli.png",
+  image: "/loja/img/logo-principal.png",
   description: "",
 };
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { OrderForm } from "@/app/components/order-form";
-import { colors } from "@/lib/catalog";
+import { colorOptions } from "@/lib/catalog";
 import { getProducts } from "@/lib/products";
 
 export default async function Home({
@@ -15,7 +15,7 @@ export default async function Home({
     <>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Natolli Studio">
-          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Studio" width={132} height={86} priority />
+          <Image className="brand-logo" src="/loja/img/logo-nome.png" alt="Natolli Studio" width={180} height={60} priority />
         </a>
         <nav aria-label="Navegacao principal">
           <a href="#catalogo">Catalogo</a>
@@ -45,7 +45,13 @@ export default async function Home({
             </div>
           </div>
           <div className="hero-media" aria-label="Bolsa artesanal Natolli">
-            <Image src="/loja/img/bolsa-bordo.png" alt="Bolsa artesanal bordo Natolli" width={720} height={900} priority />
+            <Image
+              src="/loja/img/bolsa-bordo-alca-madeira.png"
+              alt="Bolsa artesanal bordo Natolli"
+              width={1254}
+              height={1254}
+              priority
+            />
           </div>
         </section>
 
@@ -74,14 +80,13 @@ export default async function Home({
             <h2>Paleta de cores disponivel</h2>
           </div>
           <div className="color-layout">
-            <div className="color-list">
-              {colors.map((color) => (
-                <span key={color}>{color}</span>
+            <div className="color-card-grid">
+              {colorOptions.map((color) => (
+                <article className="color-card" key={color.name}>
+                  <Image src={color.image} alt={`Linha ${color.name}`} width={320} height={400} />
+                  <span>{color.name}</span>
+                </article>
               ))}
-            </div>
-            <div className="catalog-images">
-              <Image src="/loja/img/catalogo-cores-1.webp" alt="Catalogo de cores Natolli 1" width={760} height={760} />
-              <Image src="/loja/img/catalogo-cores-2.webp" alt="Catalogo de cores Natolli 2" width={760} height={760} />
             </div>
           </div>
         </section>

@@ -81,7 +81,7 @@ values
     'bolsa-bordo',
     'Bolsa artesanal bordo',
     'Bolsa feita a mao com trama encorpada e alca de madeira.',
-    '/loja/img/bolsa-bordo.png',
+    '/loja/img/bolsa-bordo-alca-madeira.png',
     18990,
     true
   ),
@@ -89,7 +89,7 @@ values
     'bolsa-rosa',
     'Bolsa tiracolo rosa bebe',
     'Modelo compacto com corrente, franja e acabamento delicado.',
-    '/loja/img/bolsa-rosa.png',
+    '/loja/img/bolsa-rosa-franja.png',
     16990,
     true
   ),
@@ -97,8 +97,13 @@ values
     'peca-personalizada',
     'Peca personalizada',
     'Escolha o modelo, a cor da linha e os detalhes do seu pedido.',
-    '/loja/img/logo-natolli.png',
+    '/loja/img/logo-principal.png',
     12000,
     true
   )
-on conflict (id) do nothing;
+on conflict (id) do update set
+  name = excluded.name,
+  description = excluded.description,
+  image_url = excluded.image_url,
+  price_cents = excluded.price_cents,
+  active = excluded.active;

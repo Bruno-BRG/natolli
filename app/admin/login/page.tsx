@@ -20,7 +20,7 @@ export default async function AdminLoginPage({
     <main className="admin-login-page">
       <form className="admin-login-card" action={signInAdmin}>
         <a className="brand" href="/" aria-label="Natolli Studio">
-          <Image className="brand-logo" src="/loja/img/logo.jpeg" alt="Natolli Admin" width={132} height={86} priority />
+          <Image className="brand-logo" src="/loja/img/logo-nome.png" alt="Natolli Admin" width={180} height={60} priority />
         </a>
 
         <div>
